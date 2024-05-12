@@ -53,20 +53,49 @@ class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
         taskViewModel = (activity as MainActivity).taskViewModel
         currentTask = args.task!!
 
-        binding?.editNoteTitle?.setText(currentTask.taskTitle)
-        binding?.editNoteDesc?.setText(currentTask.taskDesc)
+        binding?.editTaskTitle?.setText(currentTask.taskTitle)
+        binding?.editTaskDesc?.setText(currentTask.taskDesc)
+
+        binding?.apply {
+            currentTask?.let { task ->
+                val priority = task.taskPrio
+
+                // Check the priority and select the corresponding RadioButton
+                when (priority) {
+                    getString(R.string.low) -> radioLowPriority?.isChecked = true
+                    getString(R.string.medium) -> radioMediumPriority?.isChecked = true
+                    getString(R.string.high) -> radioHighPriority?.isChecked = true
+                    else -> {
+                        // Handle the case when priority doesn't match any RadioButton
+                    }
+                }
+            }
+        }
 
         binding?.editNoteFab?.setOnClickListener{
-            val taskTitle = binding?.editNoteTitle?.text.toString().trim()
-            val taskDesc = binding?.editNoteDesc?.text.toString().trim()
+            val taskTitle = binding?.editTaskTitle?.text.toString().trim()
+            val taskDesc = binding?.editTaskDesc?.text.toString().trim()
+            val selectedRadioButtonId = binding!!.priorityRadioGroup.checkedRadioButtonId
 
-            if(taskTitle.isNotEmpty()){
-                val task = Task(currentTask.id,taskTitle,taskDesc)
+            if(taskTitle.isNotEmpty() && selectedRadioButtonId != -1){
+
+                val selectedPriority = when (binding!!.priorityRadioGroup.checkedRadioButtonId) {
+                    R.id.radioLowPriority -> getString(R.string.low)
+                    R.id.radioMediumPriority -> getString(R.string.medium)
+                    R.id.radioHighPriority -> getString(R.string.high)
+                    else -> ""
+                }
+
+                val task = Task(currentTask.id,taskTitle,taskDesc,selectedPriority)
                 taskViewModel.updateTask(task)
                 view.findNavController().popBackStack(R.id.homeFragment, false)
 
             }else{
-                Toast.makeText(context, "Please enter task title", Toast.LENGTH_SHORT).show()
+                if (taskTitle.isBlank()) {
+                    Toast.makeText(context, "Please enter task title", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please select task priority", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

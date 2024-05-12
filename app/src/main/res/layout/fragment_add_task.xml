@@ -4,50 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".NewNoteFragment"
-        android:padding="12dp">
+        android:padding="16dp">
+
+
 
         <TextView
             android:id="@+id/addTaskHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins"
-            android:text="Add Note."
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/add_page_title"
             android:textColor="@color/red"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/task_titile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/task_title"
+            app:layout_constraintTop_toBottomOf="@+id/addTaskHeading"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
 
         <EditText
             android:id="@+id/addTaskTitle"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:hint="Enter the title"
-            android:padding="12dp"
-            android:textSize="20sp"
+            android:padding="8dp"
+            android:textSize="16sp"
             android:layout_below="@id/addTaskHeading"
             android:background="@drawable/pink_border"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:maxLines="1"
-            android:fontFamily="@font/poppins"/>
+            android:fontFamily="@font/poppins"
+            app:layout_constraintTop_toBottomOf="@+id/task_titile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/task_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task_title"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintTop_toBottomOf="@+id/addTaskTitle"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <EditText
             android:id="@+id/addTaskDesc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="120dp"
             android:hint="Enter the description"
             android:gravity="top"
             android:padding="12dp"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:fontFamily="@font/poppins"
             android:background="@drawable/pink_border"
             android:layout_below="@id/addTaskTitle"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/task_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/task_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/text"
+            android:fontFamily="@font/poppins_semibold"
+            app:layout_constraintTop_toBottomOf="@+id/addTaskDesc"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <RadioGroup
+            android:id="@+id/priorityRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/task_priority"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:layout_marginTop="8dp"
+            >
+
+            <RadioButton
+                android:id="@+id/radioLowPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/low"
+                android:textColor="@color/text"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_weight="1"
+                />
+
+            <RadioButton
+                android:id="@+id/radioMediumPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/medium"
+                android:textColor="@color/text"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:id="@+id/radioHighPriority"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/high"
+                android:textColor="@color/text"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"/>
+
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -52,10 +52,20 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task),MenuProvider {
     private fun saveTask(view: View){
         val taskTitle = binding.addTaskTitle.text.toString().trim()
         val taskDesc = binding.addTaskDesc.text.toString().trim()
+        val selectedRadioButtonId = binding.priorityRadioGroup.checkedRadioButtonId
 
-        if(taskTitle.isNotBlank()){
 
-            val task = Task(0, taskTitle,taskDesc)
+
+        if(taskTitle.isNotBlank() && selectedRadioButtonId != -1){
+
+            val selectedPriority = when (binding.priorityRadioGroup.checkedRadioButtonId) {
+                R.id.radioLowPriority -> getString(R.string.low)
+                R.id.radioMediumPriority -> getString(R.string.medium)
+                R.id.radioHighPriority -> getString(R.string.high)
+                else -> ""
+            }
+
+            val task = Task(0, taskTitle,taskDesc,selectedPriority)
 
             taskViewModeI.addTask(task)
 
@@ -64,8 +74,11 @@ class AddTaskFragment : Fragment(R.layout.fragment_add_task),MenuProvider {
 
 
         }else{
-            Toast.makeText(addTaskView.context, "Please enter task title", Toast.LENGTH_SHORT).show()
-
+            if (taskTitle.isBlank()) {
+                Toast.makeText(addTaskView.context, "Please enter task title", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(addTaskView.context, "Please select task priority", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }

@@ -13,6 +13,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todo.MainActivity
 import com.example.todo.R
@@ -54,6 +55,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),SearchView.OnQueryTextList
             it.findNavController().navigate(R.id.action_homeFragment_to_addTaskFragment)
 
         }
+
     }
     private fun updateUI(task: List<Task>?){
 

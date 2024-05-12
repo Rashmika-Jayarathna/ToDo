@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.databinding.TaskLayoutBinding
 import com.example.todo.fragments.HomeFragmentDirections
 import com.example.todo.model.Task
+import com.example.todo.viewmodel.TaskViewModel
 
 class TaskAdapter: RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -19,7 +20,8 @@ class TaskAdapter: RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
             return oldItem.id == newItem.id &&
                     oldItem.taskDesc == newItem.taskDesc &&
-                    oldItem.taskTitle == newItem.taskTitle
+                    oldItem.taskTitle == newItem.taskTitle &&
+                    oldItem.taskPrio == newItem.taskPrio
 
         }
 
@@ -43,11 +45,13 @@ class TaskAdapter: RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
         val currentTask = differ.currentList[position]
         holder.itemBinding.taskTitle.text = currentTask.taskTitle
         holder.itemBinding.taskDesc.text = currentTask.taskDesc
+        holder.itemBinding.taskPrio.text = currentTask.taskPrio
 
         holder.itemView.setOnClickListener{
             val direction = HomeFragmentDirections.actionHomeFragmentToEditTaskFragment(currentTask)
             it.findNavController().navigate(direction)
         }
+
     }
 
 
