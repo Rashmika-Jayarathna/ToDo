@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:fontFamily="@font/poppins_bold"
-            android:text="@string/add_page_title"
+            android:text="@string/edit_page_title"
             android:textColor="@color/red"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -58,7 +58,7 @@
             android:id="@+id/task_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/task_title"
+            android:text="Description"
             android:layout_marginTop="16dp"
             android:textSize="16sp"
             android:textColor="@color/text"
@@ -137,6 +137,34 @@
                 android:layout_gravity="center_vertical"/>
 
         </RadioGroup>
+        <Button
+            android:id="@+id/button_select_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select date"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/priorityRadioGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_select_time"
+            android:layout_marginTop="32dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
+        <Button
+            android:id="@+id/button_select_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select time"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/priorityRadioGroup"
+            app:layout_constraintStart_toEndOf="@id/button_select_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/white"
+            android:background="@drawable/button_background"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/editNoteFab"

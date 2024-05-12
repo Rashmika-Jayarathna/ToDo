@@ -1,6 +1,8 @@
 package com.example.todo.fragments
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,15 +23,21 @@ import com.example.todo.databinding.FragmentAddTaskBinding
 import com.example.todo.databinding.FragmentEditTaskBinding
 import com.example.todo.model.Task
 import com.example.todo.viewmodel.TaskViewModel
+import android.widget.Button
+import java.util.Calendar
 
 class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
 
     private var editTaskBinding: FragmentEditTaskBinding? = null
 
+
     private val binding get() =editTaskBinding
 
     private lateinit var taskViewModel:TaskViewModel
     private lateinit var currentTask: Task
+
+    private var selectedDate: String? = null
+    private var selectedTime: String? = null
 
     private val args: editTaskFragmentArgs by navArgs()
 
@@ -47,14 +55,30 @@ class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val buttonSelectDate = view.findViewById<Button>(R.id.button_select_date)
+        val buttonSelectTime = view.findViewById<Button>(R.id.button_select_time)
+
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this,viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         taskViewModel = (activity as MainActivity).taskViewModel
         currentTask = args.task!!
 
+        buttonSelectDate.setOnClickListener {
+            openDatePickerDialog()
+        }
+
+        buttonSelectTime.setOnClickListener {
+            openTimePickerDialog()
+        }
+
+
         binding?.editTaskTitle?.setText(currentTask.taskTitle)
         binding?.editTaskDesc?.setText(currentTask.taskDesc)
+        binding?.buttonSelectDate?.setText(currentTask.selectedDate)
+        binding?.buttonSelectTime?.setText(currentTask.selectedTime)
+
+
 
         binding?.apply {
             currentTask?.let { task ->
@@ -75,6 +99,9 @@ class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
         binding?.editNoteFab?.setOnClickListener{
             val taskTitle = binding?.editTaskTitle?.text.toString().trim()
             val taskDesc = binding?.editTaskDesc?.text.toString().trim()
+            val seDate = binding?.buttonSelectDate?.text.toString().trim()
+            val seTime = binding?.buttonSelectTime?.text.toString().trim()
+
             val selectedRadioButtonId = binding!!.priorityRadioGroup.checkedRadioButtonId
 
             if(taskTitle.isNotEmpty() && selectedRadioButtonId != -1){
@@ -86,7 +113,7 @@ class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
                     else -> ""
                 }
 
-                val task = Task(currentTask.id,taskTitle,taskDesc,selectedPriority)
+                val task = Task(currentTask.id,taskTitle,taskDesc,selectedPriority,seDate, seTime)
                 taskViewModel.updateTask(task)
                 view.findNavController().popBackStack(R.id.homeFragment, false)
 
@@ -98,6 +125,54 @@ class editTaskFragment : Fragment(R.layout.fragment_edit_task),MenuProvider {
                 }
             }
         }
+    }
+    private fun openDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            R.style.CustomDatePickerDialogTheme,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                selectedDate = "$year-${monthOfYear + 1}-$dayOfMonth"
+                updateDateButton()
+            },
+            year,
+            month,
+            dayOfMonth
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun openTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val hourOfDay = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(
+            requireContext(),
+            R.style.CustomDatePickerDialogTheme,
+            TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                selectedTime = String.format("%02d:%02d", hourOfDay, minute)
+                updateTimeButton()
+            },
+            hourOfDay,
+            minute,
+            false
+        )
+
+        timePickerDialog.show()
+    }
+    private fun updateDateButton() {
+        val dateButton = view?.findViewById<Button>(R.id.button_select_date)
+        dateButton?.text = selectedDate
+    }
+    private fun updateTimeButton() {
+        val timeButton = view?.findViewById<Button>(R.id.button_select_time)
+        timeButton?.text = selectedTime
     }
 
     private fun deleteTask(){
